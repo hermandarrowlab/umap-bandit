@@ -1,0 +1,237 @@
+#xinyuanyan
+#for umap bandit
+
+```{r}
+#load pkgs
+
+
+rm(list = ls())
+library(tidyverse)
+library(ggpubr)
+setwd("C:\\Users\\yan00286\\HDLab_XY\\1_Analysis_banditOnline\\2_ANALYSIS_Manifold_nonormalize")
+
+#read datafile into workspace
+
+
+alldata = read.csv("alldata_umap.csv")
+
+
+
+```
+
+
+```{r}
+#figure theme defination
+umapEE_theme = theme(
+text = element_text(size = 24),
+title = element_text(colour = "black"),
+
+
+axis.title.x = element_text(size = 24,colour = "black"),
+axis.title.y = element_text(size = 24,colour = "black"),
+axis.text = element_text(size = 24),
+#axis.text.x =  element_blank(),
+legend.title=element_text(size=24),
+legend.text=element_text(size=24),
+legend.position = "right",
+plot.title = element_text(lineheight=.8, face="bold", size = 48),
+panel.border = element_blank(),
+panel.grid.minor = element_blank(),
+panel.grid.major = element_blank(),
+
+axis.text.y = element_text(face="bold", 
+                           size=24),
+axis.text.x = element_text(face="bold", 
+                           size=24),
+
+
+axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
+axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid'),
+#axis.ticks.x  = element_blank(),
+axis.title  = element_text(size=24)
+)
+
+
+
+geom_point_size = 2.5
+
+lowvalue_col = "#fcfbfd"
+highvalue_col = "#3f007d"
+```
+
+
+#visualization one by one, for HMM model parameters
+
+```{r}
+
+
+banditTibUMAP <- alldata %>%
+
+
+gather(key = "Variable", value = "Value", c(HMM.Pexplore))
+
+p1 =ggplot(banditTibUMAP, aes(UMAP1, UMAP2, col = Value)) +
+
+geom_point(size = geom_point_size,alpha = 0.45) +
+  scale_color_gradient2(low =lowvalue_col,high =highvalue_col,
+                      limits=c(0,1),
+                      breaks=seq(0,1,0.5)
+                      )+
+  ggtitle(expression(p[explore]))+
+theme_bw()+
+  
+#load the figure theme predefined
+umapEE_theme
+
+p1
+
+banditTibUMAP <- alldata %>%
+gather(key = "Variable", value = "Value", c(HMM.Pexploit))
+
+p2 =ggplot(banditTibUMAP, aes(UMAP1, UMAP2, col = Value)) +
+
+geom_point(size = geom_point_size,alpha = 0.45) +
+  scale_color_gradient2(low =lowvalue_col,high =highvalue_col,
+                      limits=c(0,1),
+                      breaks=seq(0,1,0.5)
+                      )+
+  ggtitle(expression(p[exploit]))+
+theme_bw()+
+  
+#load the figure theme predefined
+umapEE_theme
+
+p2
+
+
+
+banditTibUMAP <- alldata %>%
+
+gather(key = "Variable", value = "Value", c(exploit_exploit))
+
+p3 = ggplot(banditTibUMAP, aes(UMAP1, UMAP2, col = Value)) +
+
+geom_point(size = geom_point_size,alpha = 0.45) +
+  scale_color_gradient2(low =lowvalue_col,high =highvalue_col,
+                      limits=c(0,1),
+                      breaks=seq(0,1,0.5)
+                      )+
+    ggtitle('')+
+theme_bw()+
+#load the figure theme predefined
+umapEE_theme
+
+p3
+
+
+
+banditTibUMAP <- alldata %>%
+
+
+gather(key = "Variable", value = "Value", c(explore_explore))
+
+p4 = ggplot(banditTibUMAP, aes(UMAP1, UMAP2, col = Value)) +
+#facet_wrap(~ Variable) +
+geom_point(size = geom_point_size,alpha = 0.45) +
+   scale_color_gradient2(low =lowvalue_col,high =highvalue_col,
+                      limits=c(0,1),
+                      breaks=seq(0,1,0.5)
+                      )+
+ggtitle('')+
+
+theme_bw()+
+#load the figure theme predefined
+umapEE_theme
+
+p4
+
+
+
+
+banditTibUMAP <- alldata %>%
+
+
+gather(key = "Variable", value = "Value", c(explore_exploit))
+
+p5 = ggplot(banditTibUMAP, aes(UMAP1, UMAP2, col = Value)) +
+
+geom_point(size = geom_point_size,alpha = 0.45) +
+   scale_color_gradient2(low =lowvalue_col,high =highvalue_col,
+                      limits=c(0,1),
+                      breaks=seq(0,1,0.5)
+                      )+
+      ggtitle('')+
+theme_bw()+
+#load the figure theme predefined
+umapEE_theme
+
+p5
+
+
+
+
+banditTibUMAP <- alldata %>%
+
+
+gather(key = "Variable", value = "Value", c(exploit_explore))
+
+p6 = ggplot(banditTibUMAP, aes(UMAP1, UMAP2, col = Value)) +
+#facet_wrap(~ Variable) +
+geom_point(size = geom_point_size,alpha = 0.45) +
+ scale_color_gradient2(low =lowvalue_col,high =highvalue_col,
+                      limits=c(0,1),
+                      breaks=seq(0,1,0.5)
+                      )+
+      ggtitle('')+
+theme_bw()+
+#load the figure theme predefined
+umapEE_theme
+
+p6
+
+
+dateinfo = format(Sys.time(), "%Y-%m-%d_%H%M")#add this info to avoid file overwrote
+filename = paste("visualization_HMM_ucurve_flip_",dateinfo, "_RAW_pexplore.pdf", sep = "")
+
+ggarrange(p1) %>%
+ ggexport(filename = filename)
+
+
+dateinfo = format(Sys.time(), "%Y-%m-%d_%H%M")#add this info to avoid file overwrote
+filename = paste("visualization_HMM_ucurve_flip_",dateinfo, "_RAW_pexploit.pdf", sep = "")
+
+ggarrange(p2) %>%
+ ggexport(filename = filename)
+
+
+dateinfo = format(Sys.time(), "%Y-%m-%d_%H%M")#add this info to avoid file overwrote
+filename = paste("visualization_HMM_ucurve_flip_",dateinfo, "_RAW_eptself.pdf", sep = "")
+
+ggarrange(p3) %>%
+ ggexport(filename = filename)
+
+
+dateinfo = format(Sys.time(), "%Y-%m-%d_%H%M")#add this info to avoid file overwrote
+filename = paste("visualization_HMM_ucurve_flip_",dateinfo, "_RAW_expself.pdf", sep = "")
+
+ggarrange(p4) %>%
+ ggexport(filename = filename)
+
+
+dateinfo = format(Sys.time(), "%Y-%m-%d_%H%M")#add this info to avoid file overwrote
+filename = paste("visualization_HMM_ucurve_flip_",dateinfo, "_RAW_exp2ept.pdf", sep = "")
+
+ggarrange(p5) %>%
+ ggexport(filename = filename)
+
+
+dateinfo = format(Sys.time(), "%Y-%m-%d_%H%M")#add this info to avoid file overwrote
+filename = paste("visualization_HMM_ucurve_flip_",dateinfo, "_RAW_ept2exp.pdf", sep = "")
+
+ggarrange(p6) %>%
+ ggexport(filename = filename)
+
+
+
+```
+
