@@ -1,0 +1,64 @@
+# Xin-Yuan Yan
+# code for regression
+# projected umap  = alpha*apathy+beta*anxiety + c
+```{r}
+#load pkgs
+
+rm(list = ls())
+library(tidyverse)
+library(ggpubr)
+setwd("C:\\Users\\yan00286\\HDLab_XY\\1_Analysis_banditOnline\\2_ANALYSIS_Manifold_nonormalize")
+
+
+#read datafile into workspace
+
+
+alldata = read.csv("alldata_umap.csv")
+
+```
+
+
+check more details in this website
+
+https://www.r-bloggers.com/2021/10/multiple-linear-regression-made-simple/
+
+
+```{r}
+
+# Apply the lm() function.
+mlm_umap1 <- lm(UMAP1~GAD7+ApathySM+ApathyBA,data = alldata)
+
+
+summary(mlm_umap1)
+
+
+```
+
+
+```{r}
+
+# Apply the lm() function.
+mlm_umap2 <- lm(UMAP2~ApathyES+ApathySM,data = alldata)
+
+
+summary(mlm_umap2)
+
+
+```
+
+
+```{r}
+
+
+# install.packages("performance")
+# install.packages("see")
+library(performance)
+
+check_model(mlm_umap1)
+```
+
+```{r}
+check_model(mlm_umap2)
+
+```
+
